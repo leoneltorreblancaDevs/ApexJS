@@ -1,0 +1,52 @@
+// codigo para mostrar errores
+apex.message.showErrors([ { type: "error", location: "inline", pageItem: vId, message: vMsg, unsafe: false } ]);
+-----------------------------------------------------------------------------------
+//Como instanciar una variable global con js en APEX
+jsonColl.AppId = $v('pFlowId'); jsonColl.SessionId = $v('pInstance');
+---------------------------------------------------------------------------
+/*
+Codigo para ocultar automaticamente el mensaje de exito que se muestra al ejecutar correctamente un proceso.
+*/
+setTimeout('if(!$("#APEX_SUCCESS_MESSAGE").hasClass("u-hidden")){$("#APEX_SUCCESS_MESSAGE").removeClass("u-visible").addClass("u-hidden");}', 2000);
+-----------------------------------------------------------------------------
+/* codigo js para abrir el mail en una nueva app adjuntando el body y el subjetc*/
+function JsMail(pSubject,pBody) {
+    document.location.href = "mailto:?subject="+pSubject+"&body="+encodeURIComponent(pBody);
+};
+
+-----------------------------------------
+/* Codigo para llamar un ajax desde js*/
+apex.server.process('PL-NAME', {
+	x01: jsonString
+}, 
+	{
+		"dataType": "text",
+		success: function (data) {
+			Accion on success
+		}
+	});
+
+
+/* Mng de reportes mediante js*/
+/* obtener las tk seleccionadas en funcion de su id de reporte*/
+function getTkIg(pRepID){
+    var ig$ = apex.region(pRepID).widget();
+    var grid = ig$.interactiveGrid("getViews", "grid");
+    var model = grid.model;
+    var selectedRecords = grid.getSelectedRecords();
+    var l_arrTk  = [];
+    var l_tk = '';
+    
+    selectedRecords.forEach(function (record) {
+        l_arrTk.push(record[model.getFieldKey('TK')]);
+    });
+
+};
+
+/* modelo de datos del reporte */
+function igGetModel (pGridID) {
+    var ig$ = apex.region(pGridID).widget();
+    var grid = ig$.interactiveGrid("getViews","grid");
+    var model   = grid.model;
+    return model;
+}
